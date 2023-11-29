@@ -21,10 +21,9 @@ public class ArtistEntity {
   private long id;
 
   @Column(name = "name")
+  @NotNull(message = "name must not be null")
   private String name;
 
-  @NotNull(message = "year_of_birth must be not null")
-  @Column(name = "year_of_birth")
   private Integer yearOfBirth;
 
   @Column(name = "bio")

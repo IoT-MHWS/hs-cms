@@ -1,7 +1,6 @@
 package artgallery.cms.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import java.util.List;
 
@@ -20,7 +19,6 @@ public class GalleryEntity {
   @Column(name = "id")
   private long id;
 
-  @NotNull(message = "name must be not null")
   @Column(name = "name")
   private String name;
 

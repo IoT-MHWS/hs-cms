@@ -39,7 +39,9 @@ public class ServerAuthenticationFilter extends OncePerRequestFilter {
       List<String> userAuthorities = Arrays.asList(request.getHeader(HEADER_USER_ROLES).split(","));
 
       var userDetails = new ServerUserDetails(userId, userName, userAuthorities);
+
       var authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
       authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
       SecurityContextHolder.getContext().setAuthentication(authToken);
 
