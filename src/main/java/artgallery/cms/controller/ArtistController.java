@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import artgallery.cms.dto.ArtistDTO;
 import artgallery.cms.exception.ArtistDoesNotExistException;
 import artgallery.cms.service.ArtistService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 import java.util.List;
 
@@ -21,8 +24,8 @@ public class ArtistController {
   private final ArtistService artistService;
 
   @GetMapping("/")
-  public ResponseEntity<?> getAllArtists(@RequestParam(value = "page", defaultValue = "0") int page,
-      @RequestParam(value = "size", defaultValue = "10") int size) {
+  public ResponseEntity<?> getAllArtists(@Min(0) @RequestParam(value = "page", defaultValue = "0") int page,
+      @Min(0) @Max(50) @RequestParam(value = "size", defaultValue = "10") int size) {
     Page<ArtistDTO> artistsPage = artistService.getAllArtists(page, size);
     List<ArtistDTO> artists = artistsPage.getContent();
     HttpHeaders headers = new HttpHeaders();
@@ -31,19 +34,19 @@ public class ArtistController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<?> getArtistById(@PathVariable("id") long id) throws ArtistDoesNotExistException {
+  public ResponseEntity<?> getArtistById(@Min(0) @PathVariable("id") long id) throws ArtistDoesNotExistException {
     return ResponseEntity.ok().body(artistService.getArtistById(id));
   }
 
   @PostMapping
   @PreAuthorize("hasRole('MODERATOR')")
-  public ResponseEntity<?> createArtist(@RequestBody ArtistDTO req) {
+  public ResponseEntity<?> createArtist(@Valid @RequestBody ArtistDTO req) {
     return ResponseEntity.status(HttpStatus.CREATED).body(artistService.createArtist(req));
   }
 
   @PutMapping("/{id}")
   @PreAuthorize("hasRole('MODERATOR')")
-  public ResponseEntity<?> updateArtist(@PathVariable("id") long id, @RequestBody ArtistDTO req)
+  public ResponseEntity<?> updateArtist(@Min(0) @PathVariable("id") long id, @Valid @RequestBody ArtistDTO req)
       throws ArtistDoesNotExistException {
     artistService.updateArtist(id, req);
     return ResponseEntity.ok().body("ok");
@@ -51,7 +54,7 @@ public class ArtistController {
 
   @DeleteMapping("/{id}")
   @PreAuthorize("hasRole('MODERATOR')")
-  public ResponseEntity<?> deleteArtist(@PathVariable("id") long id) {
+  public ResponseEntity<?> deleteArtist(@Min(0) @PathVariable("id") long id) {
     artistService.deleteArtist(id);
     return ResponseEntity.noContent().build();
   }
