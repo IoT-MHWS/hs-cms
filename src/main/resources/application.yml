@@ -2,14 +2,13 @@ server:
   port: 8764
 
 eureka:
-  instance:
-    appname: cms
-
   client:
     service-url:
       defaultZone: ${HS_CMS_EUREKA_URI:http://localhost:8761/eureka}
 
 spring:
+  application:
+    name: cms
   datasource:
     url: jdbc:postgresql://${HS_CMS_DATASOURCE_HOST}:${HS_CMS_DATASOURCE_PORT}/${HS_CMS_DATASOURCE_DATABASE}
     username: ${HS_CMS_DATASOURCE_USERNAME}
