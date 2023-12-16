@@ -18,11 +18,10 @@ public class ServerUserDetails implements UserDetails {
 
   private Collection<? extends GrantedAuthority> authorities;
 
-  public ServerUserDetails(Long userId, String username, Collection<String> authorities) {
+  public ServerUserDetails(Long userId, String username, Collection<? extends GrantedAuthority> authorities) {
     this.id = userId;
     this.username = username;
-    this.authorities = authorities.stream().map(auth -> new SimpleGrantedAuthority(auth))
-      .collect(Collectors.toList());
+    this.authorities = authorities;
   }
 
   @Override

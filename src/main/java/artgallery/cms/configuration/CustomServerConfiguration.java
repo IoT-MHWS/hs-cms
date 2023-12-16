@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
-public class ServerConfiguration {
+public class CustomServerConfiguration {
 
   @Bean
   public AuthenticationProvider authenticationProvider() {
@@ -22,11 +22,6 @@ public class ServerConfiguration {
 
       @Override
       public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        var principal = (ServerUserDetails) authentication.getPrincipal();
-        if (principal == null || principal.getId() == null || principal.getUsername() == null
-            || principal.getAuthorities() == null || principal.getAuthorities().size() == 0) {
-          return null;
-        }
         return authentication;
       }
 

@@ -27,3 +27,11 @@ springdoc:
     path: "/api-docs"
   swagger-ui:
     path: "/swagger-ui"
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security: DEBUG
+#        web: DEBUG
+#      hibernate: ERROR
