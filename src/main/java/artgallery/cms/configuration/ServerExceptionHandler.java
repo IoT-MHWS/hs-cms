@@ -1,4 +1,4 @@
-package artgallery.cms.security;
+package artgallery.cms.configuration;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

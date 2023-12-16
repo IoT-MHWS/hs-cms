@@ -1,4 +1,4 @@
-package artgallery.cms.security;
+package artgallery.cms.configuration;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
