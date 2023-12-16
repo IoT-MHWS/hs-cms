@@ -2,7 +2,7 @@ services:
   eureka:
     image: ${HS_EUREKA_IMAGE:-mhws/hs-eureka:latest}
     ports:
-      - ${HS_EUREKA_PORT:-8761}:8761
+      - ${HS_EUREKA_PORT:-8315}:8761
     networks:
       - mhws-hs
 
@@ -42,7 +42,7 @@ services:
       context: .
       dockerfile: dockerfile
     ports:
-      - ${HS_USER_PORT:-8763}:8763
+      - ${HS_USER_PORT:-8310}:8763
     environment:
       HS_CMS_EUREKA_URI: http://eureka:8761/eureka
       HS_CMS_DATASOURCE_HOST: cms-postgres
