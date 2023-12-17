@@ -12,6 +12,8 @@ services:
       POSTGRES_DATABASE: db_cms
       HS_POSTGRES_USERNAME: hs
       HS_POSTGRES_PASSWORD: example
+    ports:
+      - ${HS_CMS_POSTGRES_PORT:-8312}:5432
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./services/postgres/entrypoint/:/docker-entrypoint-initdb.d/
