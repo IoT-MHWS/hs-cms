@@ -16,7 +16,7 @@ public class CustomControllerAdvice extends ResponseEntityExceptionHandler {
   @ResponseBody
   @ExceptionHandler({  AccessDeniedException.class })
   public ResponseEntity<?> handleAuthenticationException(Exception ex) {
-    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiErrorDTO(HttpStatus.FORBIDDEN, "Authentication failed", ex.getMessage()));
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiErrorDTO(HttpStatus.FORBIDDEN, "Authentication failed", ex));
   }
 
   @ResponseBody
