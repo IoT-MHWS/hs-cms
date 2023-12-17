@@ -1,6 +1,6 @@
 package artgallery.cms.exception;
 
-public class PaintingDoesNotExistException extends Exception {
+public class PaintingDoesNotExistException extends DoesNotExistException {
   public PaintingDoesNotExistException (Long id) {
     super(String.format(("painting %s does not exist"), id));
   }

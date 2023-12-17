@@ -73,12 +73,8 @@ public class PaintingService {
 
   @Transactional
   public void deletePainting(long id) {
-    if (galleryPaintingRepository.existsByPaintingId(id)) {
-      galleryPaintingRepository.deleteGalleryPaintingEntityByPaintingId(id);
-    }
-    if (paintingRepository.existsById(id)) {
-      paintingRepository.deleteById(id);
-    }
+    galleryPaintingRepository.deleteAllByPaintingId(id);
+    paintingRepository.deleteById(id);
   }
 
   public List<GalleryExtraDTO> getLinksPaintingToGallery(long paintingId) throws PaintingDoesNotExistException {
@@ -86,12 +82,12 @@ public class PaintingService {
     List<GalleryPaintingEntity> links = galleryPaintingRepository.findByPaintingId(paintingId);
     List<GalleryEntity> galleries = links.stream()
       .map(GalleryPaintingEntity::getGallery)
-      .collect(Collectors.toList());
+      .toList();
     List<Long> galleryIds = galleries.stream()
       .map(GalleryEntity::getId)
       .collect(Collectors.toList());
     List<GalleryEntity> galleryList = galleryRepository.findAllById(galleryIds);
-    List<GalleryExtraDTO> galleryExtraList = galleryList.stream()
+    return galleryList.stream()
       .map(gallery -> {
         GalleryExtraDTO dto = new GalleryExtraDTO();
         dto.setId(gallery.getId());
@@ -102,7 +98,6 @@ public class PaintingService {
         return dto;
       })
       .collect(Collectors.toList());
-    return galleryExtraList;
   }
 
   private Optional<GalleryPaintingEntity> takeGalleryPaintingByGalleryIdAndPaintingId(long galleryId, long paintingId) {
@@ -121,9 +116,8 @@ public class PaintingService {
   }
 
   private ArtistEntity takeArtist(Long artistId) throws ArtistDoesNotExistException {
-    ArtistEntity artistEntity = artistRepository.findById(artistId).orElseThrow(() ->
+    return artistRepository.findById(artistId).orElseThrow(() ->
       new ArtistDoesNotExistException(artistId));
-    return artistEntity;
   }
 
   private PaintingEntity mapToPaintingEntity(PaintingDTO paintingDTO, ArtistEntity artist){

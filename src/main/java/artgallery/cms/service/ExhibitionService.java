@@ -66,9 +66,7 @@ public class ExhibitionService {
 
   @Transactional
   public void deleteExhibition(long id) {
-    if (exhibitionRepository.existsById(id)) {
-      exhibitionRepository.deleteById(id);
-    }
+    exhibitionRepository.deleteById(id);
   }
 
   private ExhibitionDTO mapToExhibitionDto(ExhibitionEntity exhibition) {

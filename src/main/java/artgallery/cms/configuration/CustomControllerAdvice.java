@@ -1,6 +1,7 @@
 package artgallery.cms.configuration;
 
 import artgallery.cms.dto.ApiErrorDTO;
+import artgallery.cms.exception.DoesNotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -18,4 +19,11 @@ public class CustomControllerAdvice extends ResponseEntityExceptionHandler {
   public ResponseEntity<?> handleAuthenticationException(Exception ex) {
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiErrorDTO(HttpStatus.FORBIDDEN, "Authentication failed", ex));
   }
+
+  @ResponseBody
+  @ExceptionHandler({DoesNotExistException.class })
+  public ResponseEntity<?> handleDoesNotExistException(DoesNotExistException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiErrorDTO(HttpStatus.NOT_FOUND, ex));
+  }
+
 }

@@ -25,7 +25,7 @@ public class GalleryEntity {
   @Column(name = "address")
   private String address;
 
-  @OneToMany(mappedBy = "gallery")
+  @OneToMany(mappedBy = "gallery", cascade = CascadeType.ALL)
   @ToString.Exclude
   private List<ExhibitionEntity> exhibitions;
 

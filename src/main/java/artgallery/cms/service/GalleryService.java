@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import artgallery.cms.repository.ExhibitionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,7 @@ public class GalleryService {
   private final GalleryRepository galleryRepository;
   private final GalleryPaintingRepository galleryPaintingRepository;
   private final PaintingRepository paintingRepository;
+  private final ExhibitionRepository exhibitionRepository;
 
   public List<GalleryDTO> getAllGalleries(int page, int size) {
     Pageable pageable = PageRequest.of(page, size);
@@ -70,12 +72,8 @@ public class GalleryService {
 
   @Transactional
   public void deleteGallery(long id) {
-    if (galleryPaintingRepository.existsByGalleryId(id)) {
-      galleryPaintingRepository.deleteGalleryPaintingEntityByGalleryId(id);
-    }
-    if (galleryRepository.existsById(id)) {
-      galleryRepository.deleteById(id);
-    }
+    galleryPaintingRepository.deleteAllByGalleryId(id);
+    galleryRepository.deleteById(id);
   }
 
   public List<PaintingExtraDTO> getLinksGalleryToPainting(long galleryId) throws GalleryDoesNotExistException {
@@ -83,7 +81,7 @@ public class GalleryService {
     List<GalleryPaintingEntity> links = galleryPaintingRepository.findByGalleryId(galleryId);
     List<PaintingEntity> paintings = links.stream()
       .map(GalleryPaintingEntity::getPainting)
-      .collect(Collectors.toList());
+      .toList();
     List<Long> paintingIds = paintings.stream()
       .map(PaintingEntity::getId)
       .collect(Collectors.toList());

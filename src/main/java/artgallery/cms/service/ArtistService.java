@@ -62,9 +62,7 @@ public class ArtistService {
 
   @Transactional
   public void deleteArtist(long id) {
-    if (artistRepository.existsById(id)) {
-      artistRepository.deleteById(id);
-    }
+    artistRepository.deleteById(id);
   }
 
   private ArtistDTO mapToArtistDto(ArtistEntity artist) {
