@@ -6,8 +6,6 @@ import lombok.*;
 
 @Getter
 @Setter
-@ToString
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Data
