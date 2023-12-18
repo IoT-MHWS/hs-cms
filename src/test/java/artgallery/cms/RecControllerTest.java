@@ -54,7 +54,7 @@ public class RecControllerTest extends AuthorizedControllerTest {
     MvcResult result = mockMvc.perform(
       MockMvcRequestBuilders
         .get("/api/v1/recs/artists/{artistId}/paintings", artistDTO.getId())
-        .headers(authHeaders)
+        .headers(publicAuthHeaders)
         .accept(MediaType.APPLICATION_JSON)
     ).andReturn();
     MockHttpServletResponse response = result.getResponse();
@@ -84,7 +84,7 @@ public class RecControllerTest extends AuthorizedControllerTest {
       MockMvcRequestBuilders
         .post("/api/v1/recs/rec-artists")
         .content(request)
-        .headers(authHeaders)
+        .headers(publicAuthHeaders)
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
     ).andReturn();

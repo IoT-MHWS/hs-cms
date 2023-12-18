@@ -51,7 +51,7 @@ public class ExhibitionControllerTest extends AuthorizedControllerTest {
       MockMvcRequestBuilders
         .post("/api/v1/exhibitions")
         .content(request)
-        .headers(authHeaders)
+        .headers(moderatorAuthHeaders)
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
     ).andReturn();
@@ -73,7 +73,7 @@ public class ExhibitionControllerTest extends AuthorizedControllerTest {
     MvcResult result = mockMvc.perform(
       MockMvcRequestBuilders
         .get("/api/v1/exhibitions/0")
-        .headers(authHeaders)
+        .headers(publicAuthHeaders)
     ).andReturn();
     assertEquals(404, result.getResponse().getStatus());
   }
@@ -93,7 +93,7 @@ public class ExhibitionControllerTest extends AuthorizedControllerTest {
       MvcResult result = mockMvc.perform(
         MockMvcRequestBuilders
           .get("/api/v1/exhibitions/{id}", exhibitionDTO.getId())
-          .headers(authHeaders)
+          .headers(publicAuthHeaders)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
       MockHttpServletResponse response = result.getResponse();
@@ -118,7 +118,7 @@ public class ExhibitionControllerTest extends AuthorizedControllerTest {
         MockMvcRequestBuilders
           .put("/api/v1/exhibitions/{id}", exhibitionDTO.getId())
           .content(request)
-          .headers(authHeaders)
+          .headers(moderatorAuthHeaders)
           .contentType(MediaType.APPLICATION_JSON)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
@@ -135,7 +135,7 @@ public class ExhibitionControllerTest extends AuthorizedControllerTest {
       MvcResult result = mockMvc.perform(
         MockMvcRequestBuilders
           .get("/api/v1/exhibitions/")
-          .headers(authHeaders)
+          .headers(publicAuthHeaders)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
       MockHttpServletResponse response = result.getResponse();
@@ -159,7 +159,7 @@ public class ExhibitionControllerTest extends AuthorizedControllerTest {
       MvcResult result = mockMvc.perform(
         MockMvcRequestBuilders
           .delete("/api/v1/exhibitions/{id}", exhibitionDTO.getId())
-          .headers(authHeaders)
+          .headers(moderatorAuthHeaders)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
       MockHttpServletResponse response = result.getResponse();

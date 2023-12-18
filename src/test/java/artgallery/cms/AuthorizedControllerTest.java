@@ -16,16 +16,22 @@ public abstract class AuthorizedControllerTest {
   private static final String HEADER_USER_AUTHORITIES = "X-User-Authorities";
   private static final String userId = "1";
   private static final String username = "user";
-  private static final String userAuthorities = "MODERATOR";
+  private static final String publicAuthorities = "ROLE_PUBLIC";
+  private static final String moderatorAuthorities = "ROLE_MODERATOR";
 
   static protected final ObjectMapper objectMapper = new ObjectMapper();
 
-  protected static HttpHeaders authHeaders = new HttpHeaders();
+  protected static HttpHeaders moderatorAuthHeaders = new HttpHeaders();
+  protected static HttpHeaders publicAuthHeaders = new HttpHeaders();
 
   @BeforeAll
   static void setupHeaders() {
-    authHeaders.set(HEADER_USER_ID, userId);
-    authHeaders.set(HEADER_USER_NAME, username);
-    authHeaders.set(HEADER_USER_AUTHORITIES, userAuthorities);
+    moderatorAuthHeaders.set(HEADER_USER_ID, userId);
+    moderatorAuthHeaders.set(HEADER_USER_NAME, username);
+    moderatorAuthHeaders.set(HEADER_USER_AUTHORITIES, moderatorAuthorities);
+
+    publicAuthHeaders.set(HEADER_USER_ID, userId);
+    publicAuthHeaders.set(HEADER_USER_NAME, username);
+    publicAuthHeaders.set(HEADER_USER_AUTHORITIES, publicAuthorities);
   }
 }

@@ -74,7 +74,7 @@ public class GalleryPaintingTest extends AuthorizedControllerTest {
       MockMvcRequestBuilders.
         put("/api/v1/galleries/{id}/paintings/{paintingId}", galleryDTO.getId(), paintingDTO.getId())
         .content(request)
-        .headers(authHeaders)
+        .headers(moderatorAuthHeaders)
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
     ).andReturn();
@@ -109,7 +109,7 @@ public class GalleryPaintingTest extends AuthorizedControllerTest {
         MockMvcRequestBuilders.
           put("/api/v1/galleries/{id}/paintings/{paintingId}", galleryDTO.getId(), paintingDTO.getId())
           .content(request)
-          .headers(authHeaders)
+          .headers(moderatorAuthHeaders)
           .contentType(MediaType.APPLICATION_JSON)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
@@ -130,7 +130,7 @@ public class GalleryPaintingTest extends AuthorizedControllerTest {
       MvcResult result = mockMvc.perform(
         MockMvcRequestBuilders.
           delete("/api/v1/galleries/{id}/paintings/{paintingId}", galleryDTO.getId(), paintingDTO.getId())
-          .headers(authHeaders)
+          .headers(moderatorAuthHeaders)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
       assertEquals(204, result.getResponse().getStatus());
@@ -141,7 +141,7 @@ public class GalleryPaintingTest extends AuthorizedControllerTest {
       MvcResult result = mockMvc.perform(
         MockMvcRequestBuilders.
           get("/api/v1/galleries/{id}/paintings", galleryDTO.getId())
-          .headers(authHeaders)
+          .headers(publicAuthHeaders)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
       MockHttpServletResponse response = result.getResponse();
@@ -166,7 +166,7 @@ public class GalleryPaintingTest extends AuthorizedControllerTest {
       MvcResult result = mockMvc.perform(
         MockMvcRequestBuilders.
           get("/api/v1/paintings/{id}/galleries", paintingDTO.getId())
-          .headers(authHeaders)
+          .headers(publicAuthHeaders)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
       MockHttpServletResponse response = result.getResponse();

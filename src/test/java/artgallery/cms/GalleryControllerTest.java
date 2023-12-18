@@ -40,7 +40,7 @@ public class GalleryControllerTest extends AuthorizedControllerTest {
       MockMvcRequestBuilders
         .post("/api/v1/galleries")
         .content(request)
-        .headers(authHeaders)
+        .headers(moderatorAuthHeaders)
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
     ).andReturn();
@@ -61,7 +61,7 @@ public class GalleryControllerTest extends AuthorizedControllerTest {
       MockMvcRequestBuilders
         .post("/api/v1/galleries")
         .content("{}")
-        .headers(authHeaders)
+        .headers(moderatorAuthHeaders)
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
     ).andReturn();
@@ -84,7 +84,7 @@ public class GalleryControllerTest extends AuthorizedControllerTest {
       MvcResult result = mockMvc.perform(
         MockMvcRequestBuilders
           .get("/api/v1/galleries/{id}", galleryDTO.getId())
-          .headers(authHeaders)
+          .headers(publicAuthHeaders)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
       MockHttpServletResponse response = result.getResponse();
@@ -104,7 +104,7 @@ public class GalleryControllerTest extends AuthorizedControllerTest {
       MvcResult result = mockMvc.perform(
         MockMvcRequestBuilders
           .get("/api/v1/galleries/2000")
-          .headers(authHeaders)
+          .headers(publicAuthHeaders)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
       MockHttpServletResponse response = result.getResponse();
@@ -116,7 +116,7 @@ public class GalleryControllerTest extends AuthorizedControllerTest {
       MvcResult result = mockMvc.perform(
         MockMvcRequestBuilders.
           get("/api/v1/galleries/{id}/paintings", galleryDTO.getId())
-          .headers(authHeaders)
+          .headers(publicAuthHeaders)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
       MockHttpServletResponse response = result.getResponse();
@@ -137,7 +137,7 @@ public class GalleryControllerTest extends AuthorizedControllerTest {
         MockMvcRequestBuilders
           .put("/api/v1/galleries/{id}", galleryDTO.getId())
           .content(request)
-          .headers(authHeaders)
+          .headers(moderatorAuthHeaders)
           .contentType(MediaType.APPLICATION_JSON)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
@@ -158,7 +158,7 @@ public class GalleryControllerTest extends AuthorizedControllerTest {
       MvcResult result = mockMvc.perform(
         MockMvcRequestBuilders
           .get("/api/v1/galleries/")
-          .headers(authHeaders)
+          .headers(publicAuthHeaders)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
       MockHttpServletResponse response = result.getResponse();
@@ -180,7 +180,7 @@ public class GalleryControllerTest extends AuthorizedControllerTest {
       MvcResult result = mockMvc.perform(
         MockMvcRequestBuilders
           .delete("/api/v1/galleries/{id}", galleryDTO.getId())
-          .headers(authHeaders)
+          .headers(moderatorAuthHeaders)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
       MockHttpServletResponse response = result.getResponse();

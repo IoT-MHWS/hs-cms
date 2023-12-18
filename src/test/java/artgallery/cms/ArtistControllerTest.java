@@ -41,7 +41,7 @@ public class ArtistControllerTest extends AuthorizedControllerTest {
       MockMvcRequestBuilders
         .post("/api/v1/artists")
         .content(request)
-        .headers(authHeaders)
+        .headers(moderatorAuthHeaders)
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON)
     ).andReturn();
@@ -63,7 +63,7 @@ public class ArtistControllerTest extends AuthorizedControllerTest {
     MvcResult result = mockMvc.perform(
       MockMvcRequestBuilders
         .get("/api/v1/artists/")
-        .headers(authHeaders)
+        .headers(publicAuthHeaders)
         .accept(MediaType.APPLICATION_JSON)
     ).andReturn();
     MockHttpServletResponse response = result.getResponse();
@@ -84,7 +84,7 @@ public class ArtistControllerTest extends AuthorizedControllerTest {
     MvcResult result = mockMvc.perform(
       MockMvcRequestBuilders
         .get("/api/v1/artists/0", artistDTO.getId())
-        .headers(authHeaders)
+        .headers(publicAuthHeaders)
     ).andReturn();
     assertEquals(404, result.getResponse().getStatus());
   }
@@ -104,7 +104,7 @@ public class ArtistControllerTest extends AuthorizedControllerTest {
       MvcResult result = mockMvc.perform(
         MockMvcRequestBuilders
           .get("/api/v1/artists/{id}", artistDTO.getId())
-          .headers(authHeaders)
+          .headers(publicAuthHeaders)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
       MockHttpServletResponse response = result.getResponse();
@@ -129,7 +129,7 @@ public class ArtistControllerTest extends AuthorizedControllerTest {
         MockMvcRequestBuilders
           .put("/api/v1/artists/{id}", artistDTO.getId())
           .content(request)
-          .headers(authHeaders)
+          .headers(moderatorAuthHeaders)
           .contentType(MediaType.APPLICATION_JSON)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
@@ -146,7 +146,7 @@ public class ArtistControllerTest extends AuthorizedControllerTest {
       MvcResult result = mockMvc.perform(
         MockMvcRequestBuilders
           .get("/api/v1/artists/")
-          .headers(authHeaders)
+          .headers(publicAuthHeaders)
           .queryParam("size", "50")
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
@@ -174,7 +174,7 @@ public class ArtistControllerTest extends AuthorizedControllerTest {
       MvcResult result = mockMvc.perform(
         MockMvcRequestBuilders
           .delete("/api/v1/artists/{id}", artistDTO.getId())
-          .headers(authHeaders)
+          .headers(moderatorAuthHeaders)
           .accept(MediaType.APPLICATION_JSON)
       ).andReturn();
       MockHttpServletResponse response = result.getResponse();
