@@ -185,6 +185,17 @@ public class ArtistControllerTest extends AuthorizedControllerTest {
       );
     }
 
+    @Test
+    void testPermissionDeniedArtistDeleting() throws Exception {
+      MvcResult result = mockMvc.perform(
+        MockMvcRequestBuilders
+          .delete("/api/v1/artists/{id}", artistDTO.getId())
+          .headers(publicAuthHeaders)
+          .accept(MediaType.APPLICATION_JSON)
+      ).andReturn();
+      assertEquals(403, result.getResponse().getStatus());
+    }
+
     @AfterEach
     public void deleteArtist() {
       artistService.deleteArtist(artistDTO.getId());
