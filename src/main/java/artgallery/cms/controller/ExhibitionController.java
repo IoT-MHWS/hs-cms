@@ -3,6 +3,7 @@ package artgallery.cms.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import artgallery.cms.dto.ExhibitionDTO;
@@ -32,11 +33,13 @@ public class ExhibitionController {
   }
 
   @PostMapping
+  @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<?> createExhibition(@Valid @RequestBody ExhibitionDTO req) throws GalleryDoesNotExistException {
     return ResponseEntity.status(HttpStatus.CREATED).body(exhibitionService.createExhibition(req));
   }
 
   @PutMapping("/{id}")
+  @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<?> updateExhibition(@NotNull @Min(0) @PathVariable("id") long id, @Valid @RequestBody ExhibitionDTO req)
       throws ExhibitionDoesNotExistException, GalleryDoesNotExistException {
     exhibitionService.updateExhibition(id, req);
@@ -44,6 +47,7 @@ public class ExhibitionController {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<?> deleteExhibition(@NotNull @Min(0) @PathVariable("id") long id) {
     exhibitionService.deleteExhibition(id);
     return ResponseEntity.noContent().build();

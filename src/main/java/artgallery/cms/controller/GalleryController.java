@@ -52,7 +52,6 @@ public class GalleryController {
   }
 
   @GetMapping("/{galleryId}/paintings")
-  @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<?> getLinksToPaintings(@Min(0) @PathVariable long galleryId) throws GalleryDoesNotExistException {
     return ResponseEntity.ok().body(galleryService.getLinksGalleryToPainting(galleryId));
   }
