@@ -86,7 +86,7 @@ public class GalleryService {
       .map(PaintingEntity::getId)
       .collect(Collectors.toList());
     List<PaintingEntity> paintingList = paintingRepository.findAllById(paintingIds);
-    List<PaintingExtraDTO> paintingExtraList = paintingList.stream()
+    return paintingList.stream()
       .map(painting -> {
         PaintingExtraDTO dto = new PaintingExtraDTO();
         dto.setId(painting.getId());
@@ -98,7 +98,6 @@ public class GalleryService {
         return dto;
       })
       .collect(Collectors.toList());
-    return paintingExtraList;
   }
 
   private Optional<GalleryPaintingEntity> takeGalleryPaintingByGalleryIdAndPaintingId(long galleryId, long paintingId) {
@@ -106,16 +105,22 @@ public class GalleryService {
   }
 
   @Transactional
-  public GalleryPaintingDTO createOrUpdateLinkGalleryToPainting(long galleryId, long paintingId, DescriptionDTO linkDto, boolean isNewLink)
+  public GalleryPaintingDTO createOrUpdateLinkGalleryToPainting(long galleryId, long paintingId, DescriptionDTO linkDto, boolean exists)
     throws GalleryDoesNotExistException, PaintingDoesNotExistException {
     GalleryEntity gallery = galleryRepository.findById(galleryId)
       .orElseThrow(() -> new GalleryDoesNotExistException(galleryId));
     PaintingEntity painting = paintingRepository.findById(paintingId)
       .orElseThrow(() -> new PaintingDoesNotExistException(paintingId));
-    GalleryPaintingEntity link = isNewLink ? new GalleryPaintingEntity() : galleryPaintingRepository.findByGalleryIdAndPaintingId(galleryId, paintingId)
-      .orElse(new GalleryPaintingEntity());
-    link.setGallery(gallery);
-    link.setPainting(painting);
+    GalleryPaintingEntity link;
+    if (exists) {
+      link = galleryPaintingRepository
+        .findByGalleryIdAndPaintingId(galleryId, paintingId)
+        .orElseThrow(() -> new RuntimeException("Impossible error"));
+    } else {
+      link = new GalleryPaintingEntity();
+      link.setGallery(gallery);
+      link.setPainting(painting);
+    }
     link.setDescription(linkDto.getDescription());
     galleryPaintingRepository.save(link);
     return mapToGallery2PaintingDto(link);

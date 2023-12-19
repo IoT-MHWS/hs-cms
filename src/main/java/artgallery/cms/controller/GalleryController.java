@@ -52,7 +52,6 @@ public class GalleryController {
   }
 
   @GetMapping("/{galleryId}/paintings")
-  @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<?> getLinksToPaintings(@Min(0) @PathVariable long galleryId) throws GalleryDoesNotExistException {
     return ResponseEntity.ok().body(galleryService.getLinksGalleryToPainting(galleryId));
   }
@@ -61,9 +60,9 @@ public class GalleryController {
   @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<?> createOrUpdateLink(@Min(0) @PathVariable long galleryId, @Min(0) @PathVariable long paintingId,
       @Valid @RequestBody DescriptionDTO linkDto) throws GalleryDoesNotExistException, PaintingDoesNotExistException {
-    boolean isNewLink = (galleryService.existsByGalleryIdAndPaintingId(galleryId, paintingId));
-    return ResponseEntity.status(isNewLink ? HttpStatus.CREATED : HttpStatus.OK)
-        .body(galleryService.createOrUpdateLinkGalleryToPainting(galleryId, paintingId, linkDto, isNewLink));
+    boolean exists = (galleryService.existsByGalleryIdAndPaintingId(galleryId, paintingId));
+    return ResponseEntity.status(exists ? HttpStatus.OK : HttpStatus.CREATED)
+        .body(galleryService.createOrUpdateLinkGalleryToPainting(galleryId, paintingId, linkDto, exists));
   }
 
   @DeleteMapping("/{galleryId}/paintings/{paintingId}")
