@@ -18,7 +18,6 @@ public class ApiErrorDTO {
   private LocalDateTime timestamp;
   private String message;
   private String debugMessage;
-  private List<ApiSubError> subErrors;
 
   private ApiErrorDTO() {
     timestamp = LocalDateTime.now();
@@ -48,24 +47,5 @@ public class ApiErrorDTO {
     this.status = status;
     this.message = message;
     this.debugMessage = ex.getMessage();
-  }
-}
-
-abstract class ApiSubError {
-
-}
-
-@Data
-@EqualsAndHashCode(callSuper = false)
-@AllArgsConstructor
-class ApiValidationError extends ApiSubError {
-  private String object;
-  private String field;
-  private Object rejectedValue;
-  private String message;
-
-  ApiValidationError(String object, String message) {
-    this.object = object;
-    this.message = message;
   }
 }
