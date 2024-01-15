@@ -7,7 +7,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.kafka.core.KafkaTemplate;
+import artgallery.cms.dto.PaintingDeleteDTO;
 import artgallery.cms.dto.GalleryExtraDTO;
 import artgallery.cms.dto.PaintingDTO;
 import artgallery.cms.entity.ArtistEntity;
@@ -28,6 +29,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PaintingServiceImpl implements PaintingService {
+  @Autowired
+  private KafkaTemplate<String, PaintingDeleteDTO> kafkaTemplate;
   private final PaintingRepository paintingRepository;
   private final ArtistRepository artistRepository;
   private final GalleryPaintingRepository galleryPaintingRepository;
@@ -53,8 +56,8 @@ public class PaintingServiceImpl implements PaintingService {
     return mapToPaintingDto(painting);
   }
 
-    @Transactional
-    public PaintingDTO updatePainting(long id, PaintingDTO paintingDTO) throws PaintingDoesNotExistException, ArtistDoesNotExistException{
+  @Transactional
+  public PaintingDTO updatePainting(long id, PaintingDTO paintingDTO) throws PaintingDoesNotExistException, ArtistDoesNotExistException{
     Optional<PaintingEntity> painting = paintingRepository.findById(id);
     if (painting.isPresent()) {
       PaintingEntity p = painting.get();
@@ -71,6 +74,9 @@ public class PaintingServiceImpl implements PaintingService {
 
   @Transactional
   public void deletePainting(long id) {
+    PaintingDeleteDTO paintingDeleteDTO = new PaintingDeleteDTO();
+    paintingDeleteDTO.setId(id);
+    kafkaTemplate.send("delete-painting", paintingDeleteDTO);
     galleryPaintingRepository.deleteAllByPaintingId(id);
     paintingRepository.deleteById(id);
   }
