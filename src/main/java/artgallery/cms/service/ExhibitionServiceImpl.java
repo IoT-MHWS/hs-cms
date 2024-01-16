@@ -1,9 +1,12 @@
 package artgallery.cms.service;
 
+import artgallery.cms.dto.ExhibitionDeleteDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +25,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ExhibitionServiceImpl implements ExhibitionService {
+  @Autowired
+  private KafkaTemplate<String, ExhibitionDeleteDTO> kafkaTemplateExhibition;
   private final ExhibitionRepository exhibitionRepository;
   private final GalleryRepository galleryRepository;
 
@@ -66,6 +71,9 @@ public class ExhibitionServiceImpl implements ExhibitionService {
 
   @Transactional
   public void deleteExhibition(long id) {
+    ExhibitionDeleteDTO exhibition = new ExhibitionDeleteDTO();
+    exhibition.setId(id);
+    kafkaTemplateExhibition.send("delete-exhibition", exhibition);
     exhibitionRepository.deleteById(id);
   }
 
