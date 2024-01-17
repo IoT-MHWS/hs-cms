@@ -3,6 +3,7 @@ package artgallery.cms.configuration;
 import com.hazelcast.client.Client;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
+import com.hazelcast.client.config.ClientConnectionStrategyConfig;
 import com.hazelcast.core.HazelcastInstance;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -24,10 +25,9 @@ public class CustomHazelcastConfiguration {
     ClientConfig clientConfig = new ClientConfig();
     clientConfig.getNetworkConfig().addAddress(hazelcastAddresses);
     clientConfig.setClusterName(hazelcastClusterName);
-  }
-
-  @EventListener(ContextClosedEvent.class)
-  public void shutdownHazelcastClient(HazelcastInstance hazelcastClient) {
-    hazelcastClient.shutdown();
+    clientConfig.getConnectionStrategyConfig()
+      .setAsyncStart(true)
+      .setReconnectMode(ClientConnectionStrategyConfig.ReconnectMode.ASYNC);
+    return clientConfig;
   }
 }
