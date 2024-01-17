@@ -1,5 +1,11 @@
 package artgallery.cms.controller;
 
+import artgallery.cms.dto.ArtistDTO;
+import artgallery.cms.exception.ArtistDoesNotExistException;
+import artgallery.cms.service.ArtistService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
@@ -7,13 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import artgallery.cms.dto.ArtistDTO;
-import artgallery.cms.exception.ArtistDoesNotExistException;
-import artgallery.cms.service.ArtistService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class ArtistController {
 
   @GetMapping("/")
   public ResponseEntity<?> getAllArtists(@Min(0) @RequestParam(value = "page", defaultValue = "0") int page,
-      @Min(0) @Max(50) @RequestParam(value = "size", defaultValue = "10") int size) {
+                                         @Min(0) @Max(50) @RequestParam(value = "size", defaultValue = "10") int size) {
     Page<ArtistDTO> artistsPage = artistService.getAllArtists(page, size);
     List<ArtistDTO> artists = artistsPage.getContent();
     HttpHeaders headers = new HttpHeaders();
@@ -47,7 +46,7 @@ public class ArtistController {
   @PutMapping("/{id}")
   @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<?> updateArtist(@Min(0) @PathVariable("id") long id, @Valid @RequestBody ArtistDTO req)
-      throws ArtistDoesNotExistException {
+    throws ArtistDoesNotExistException {
     artistService.updateArtist(id, req);
     return ResponseEntity.ok().body("ok");
   }

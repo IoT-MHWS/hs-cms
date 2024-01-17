@@ -1,5 +1,9 @@
 package artgallery.cms.service;
 
+import artgallery.cms.dto.ArtistDTO;
+import artgallery.cms.entity.ArtistEntity;
+import artgallery.cms.exception.ArtistDoesNotExistException;
+import artgallery.cms.repository.ArtistRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -7,11 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import artgallery.cms.dto.ArtistDTO;
-import artgallery.cms.entity.ArtistEntity;
-import artgallery.cms.exception.ArtistDoesNotExistException;
-import artgallery.cms.repository.ArtistRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,14 +38,14 @@ public class ArtistServiceImpl implements ArtistService {
 
   }
 
-  public ArtistDTO createArtist(ArtistDTO artistDTO){
+  public ArtistDTO createArtist(ArtistDTO artistDTO) {
     ArtistEntity artist = mapToArtistEntity(artistDTO);
     ArtistEntity createdArtist = artistRepository.save(artist);
     return mapToArtistDto(createdArtist);
   }
 
   @Transactional
-  public ArtistDTO updateArtist(long id, ArtistDTO artistDTO) throws ArtistDoesNotExistException{
+  public ArtistDTO updateArtist(long id, ArtistDTO artistDTO) throws ArtistDoesNotExistException {
     Optional<ArtistEntity> optionalArtist = artistRepository.findById(id);
     if (optionalArtist.isPresent()) {
       ArtistEntity existingArtist = optionalArtist.get();
@@ -57,7 +56,8 @@ public class ArtistServiceImpl implements ArtistService {
       existingArtist.setStyle(artistDTO.getStyle());
       ArtistEntity updatedArtist = artistRepository.save(existingArtist);
       return mapToArtistDto(updatedArtist);
-    } throw new ArtistDoesNotExistException(id);
+    }
+    throw new ArtistDoesNotExistException(id);
   }
 
   @Transactional
@@ -66,7 +66,7 @@ public class ArtistServiceImpl implements ArtistService {
   }
 
   private ArtistDTO mapToArtistDto(ArtistEntity artist) {
-      return new ArtistDTO(artist.getId(), artist.getName(), artist.getYearOfBirth(), artist.getBio(), artist.getStyle());
+    return new ArtistDTO(artist.getId(), artist.getName(), artist.getYearOfBirth(), artist.getBio(), artist.getStyle());
   }
 
   private List<ArtistDTO> mapToArtistDtoList(List<ArtistEntity> artists) {

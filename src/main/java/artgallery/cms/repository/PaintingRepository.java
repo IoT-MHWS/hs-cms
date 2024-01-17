@@ -1,9 +1,8 @@
 package artgallery.cms.repository;
 
+import artgallery.cms.entity.PaintingEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import artgallery.cms.entity.PaintingEntity;
 
 import java.util.List;
 

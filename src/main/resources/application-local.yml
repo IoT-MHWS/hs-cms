@@ -34,6 +34,13 @@ management:
       exposure:
         include: "*"
 
+app:
+  hazelcast:
+    addresses: ${HS_CMS_HAZELCAST_ADDRESSES:localhost:5701}
+    cluster-name: ${HS_CMS_HAZELCAST_CLUSTER_NAME:donatello}
+    maps:
+      paintings-metadata: paintings-metadata
+
 #logging:
 #  level:
 #    org:

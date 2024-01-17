@@ -18,7 +18,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
       - ./services/postgres/entrypoint/:/docker-entrypoint-initdb.d/
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready", "-d", "db_cms"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d db_cms"]
       start_period: 60s
       interval: 10s
       timeout: 60s
@@ -46,7 +46,7 @@ services:
       liquibase:
         condition: service_completed_successfully
     ports:
-      - ${HS_USER_PORT:-8310}:8763
+      - ${HS_USER_PORT:-8310}:8764
     environment:
       HS_CMS_EUREKA_URI: http://eureka:8761/eureka
       HS_CMS_DATASOURCE_HOST: postgres
@@ -54,6 +54,41 @@ services:
       HS_CMS_DATASOURCE_DATABASE: db_cms
       HS_CMS_DATASOURCE_USERNAME: hs
       HS_CMS_DATASOURCE_PASSWORD: example
+      HS_CMS_HAZELCAST_ADDRESSES: hazelcast:5701
+      HS_CMS_KAFKA_URI: kafka:9092
+
+  hazelcast:
+    image: hazelcast/hazelcast:5.3-slim
+    environment:
+      JAVA_OPTS: "-Dhazelcast.config=/opt/hazelcast/config_ext/hazelcast.yaml"
+    ports:
+      - ${HS_HAZELCAST_PORT:-5701}:5701
+    volumes:
+      - ./services/hazelcast:/opt/hazelcast/config_ext
+
+  hazelcast-management-center:
+    image: hazelcast/management-center:latest
+    ports:
+      - 8080:8080
+
+  kafka:
+    image: docker.io/bitnami/kafka:3.6
+    ports:
+      - "9092:9094"
+    volumes:
+      - "kafka-data:/bitnami"
+    environment:
+      # KRaft settings
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      # Listeners
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092,EXTERNAL://localhost:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
 
 volumes:
   postgres-data:
+  kafka-data:

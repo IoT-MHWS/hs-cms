@@ -1,13 +1,10 @@
 package artgallery.cms.configuration;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
-
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.Getter;
+import java.util.Collection;
 
 public class ServerUserDetails implements UserDetails {
 
