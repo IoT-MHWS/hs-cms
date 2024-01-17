@@ -1,16 +1,5 @@
 package artgallery.cms.service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import artgallery.cms.repository.ExhibitionRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import artgallery.cms.dto.DescriptionDTO;
 import artgallery.cms.dto.GalleryDTO;
 import artgallery.cms.dto.GalleryPaintingDTO;
@@ -20,10 +9,20 @@ import artgallery.cms.entity.GalleryPaintingEntity;
 import artgallery.cms.entity.PaintingEntity;
 import artgallery.cms.exception.GalleryDoesNotExistException;
 import artgallery.cms.exception.PaintingDoesNotExistException;
+import artgallery.cms.repository.ExhibitionRepository;
 import artgallery.cms.repository.GalleryPaintingRepository;
 import artgallery.cms.repository.GalleryRepository;
 import artgallery.cms.repository.PaintingRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +41,7 @@ public class GalleryServiceImpl implements GalleryService {
   }
 
 
-  public GalleryDTO getGalleryById(long id) throws GalleryDoesNotExistException{
+  public GalleryDTO getGalleryById(long id) throws GalleryDoesNotExistException {
     GalleryEntity optionalGallery = galleryRepository.findById(id)
       .orElseThrow(() -> new GalleryDoesNotExistException(id));
     return mapToGalleryDto(optionalGallery);

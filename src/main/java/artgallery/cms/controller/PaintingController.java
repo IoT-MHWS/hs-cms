@@ -21,7 +21,7 @@ public class PaintingController {
 
   @GetMapping("/")
   public ResponseEntity<?> getAllPaintings(@Min(0) @RequestParam(value = "page", defaultValue = "0") int page,
-      @Min(0) @Max(50) @RequestParam(value = "size", defaultValue = "10") int size) {
+                                           @Min(0) @Max(50) @RequestParam(value = "size", defaultValue = "10") int size) {
     return ResponseEntity.ok().body(paintingService.getAllPaintings(page, size));
   }
 
@@ -39,7 +39,7 @@ public class PaintingController {
   @PutMapping("/{id}")
   @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<?> updatePainting(@Min(0) @PathVariable("id") long id, @Valid @RequestBody PaintingDTO req)
-      throws PaintingDoesNotExistException, ArtistDoesNotExistException {
+    throws PaintingDoesNotExistException, ArtistDoesNotExistException {
     paintingService.updatePainting(id, req);
     return ResponseEntity.ok().body("ok");
   }

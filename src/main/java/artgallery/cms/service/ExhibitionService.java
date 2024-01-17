@@ -3,7 +3,6 @@ package artgallery.cms.service;
 import artgallery.cms.dto.ExhibitionDTO;
 import artgallery.cms.exception.ExhibitionDoesNotExistException;
 import artgallery.cms.exception.GalleryDoesNotExistException;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

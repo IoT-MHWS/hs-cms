@@ -14,20 +14,20 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class CustomControllerAdvice extends ResponseEntityExceptionHandler {
 
   @ResponseBody
-  @ExceptionHandler({  AccessDeniedException.class })
-  public ResponseEntity<?> handleAuthenticationException(Exception ex) {
+  @ExceptionHandler({AccessDeniedException.class})
+  public ResponseEntity<ApiErrorDTO> handleAuthenticationException(Exception ex) {
     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiErrorDTO(HttpStatus.FORBIDDEN, "Authentication failed", ex));
   }
 
   @ResponseBody
-  @ExceptionHandler({DoesNotExistException.class })
-  public ResponseEntity<?> handleDoesNotExistException(DoesNotExistException ex) {
+  @ExceptionHandler({DoesNotExistException.class})
+  public ResponseEntity<ApiErrorDTO> handleDoesNotExistException(DoesNotExistException ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiErrorDTO(HttpStatus.NOT_FOUND, ex.getMessage()));
   }
 
   @ResponseBody
   @ExceptionHandler({IllegalArgumentException.class})
-  public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
+  public ResponseEntity<ApiErrorDTO> handleIllegalArgumentException(IllegalArgumentException ex) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiErrorDTO(HttpStatus.BAD_REQUEST, ex.getMessage()));
   }
 

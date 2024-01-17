@@ -1,24 +1,24 @@
 package artgallery.cms.service;
 
-import artgallery.cms.dto.cache.PaintingMetadata;
-import artgallery.cms.repository.*;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.kafka.core.KafkaTemplate;
-import artgallery.cms.dto.PaintingDeleteDTO;
 import artgallery.cms.dto.GalleryExtraDTO;
 import artgallery.cms.dto.PaintingDTO;
+import artgallery.cms.dto.PaintingDeleteDTO;
+import artgallery.cms.dto.cache.PaintingMetadata;
 import artgallery.cms.entity.ArtistEntity;
 import artgallery.cms.entity.GalleryEntity;
 import artgallery.cms.entity.GalleryPaintingEntity;
 import artgallery.cms.entity.PaintingEntity;
 import artgallery.cms.exception.ArtistDoesNotExistException;
 import artgallery.cms.exception.PaintingDoesNotExistException;
+import artgallery.cms.repository.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,7 +43,7 @@ public class PaintingServiceImpl implements PaintingService {
     return mapToPaintingDtoList(paintings);
   }
 
-  public PaintingDTO getPaintingById(long id) throws PaintingDoesNotExistException{
+  public PaintingDTO getPaintingById(long id) throws PaintingDoesNotExistException {
     var cache = paintingCacheRepository.getPaintingMetadata(id);
     if (cache != null) {
       return new PaintingDTO(id, cache.name(), cache.yearOfCreation(), cache.artistId());
@@ -65,7 +65,7 @@ public class PaintingServiceImpl implements PaintingService {
   }
 
   @Transactional
-  public PaintingDTO updatePainting(long id, PaintingDTO paintingDTO) throws PaintingDoesNotExistException, ArtistDoesNotExistException{
+  public PaintingDTO updatePainting(long id, PaintingDTO paintingDTO) throws PaintingDoesNotExistException, ArtistDoesNotExistException {
     paintingCacheRepository.deletePaintingMetadata(id);
     Optional<PaintingEntity> painting = paintingRepository.findById(id);
     if (painting.isPresent()) {
@@ -134,7 +134,7 @@ public class PaintingServiceImpl implements PaintingService {
       new ArtistDoesNotExistException(artistId));
   }
 
-  private PaintingEntity mapToPaintingEntity(PaintingDTO paintingDTO, ArtistEntity artist){
+  private PaintingEntity mapToPaintingEntity(PaintingDTO paintingDTO, ArtistEntity artist) {
     PaintingEntity paintingEntity = new PaintingEntity();
     paintingEntity.setName(paintingDTO.getName());
     paintingEntity.setYearOfCreation(paintingDTO.getYearOfCreation());

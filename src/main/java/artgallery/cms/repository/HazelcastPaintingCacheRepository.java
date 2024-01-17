@@ -28,8 +28,9 @@ public class HazelcastPaintingCacheRepository implements PaintingCacheRepository
           paintingsMetadataMap = hazelcastClient.getMap(configuration.paintingsMetadataMap);
           log.info("hazelcast maps initialized");
         }
-      } catch (InterruptedException ex){
-        ex.printStackTrace();
+      } catch (InterruptedException ex) {
+        log.error(ex.getMessage());
+        Thread.currentThread().interrupt();
       }
     });
   }

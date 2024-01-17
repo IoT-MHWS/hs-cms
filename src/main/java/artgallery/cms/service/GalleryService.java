@@ -4,19 +4,8 @@ import artgallery.cms.dto.DescriptionDTO;
 import artgallery.cms.dto.GalleryDTO;
 import artgallery.cms.dto.GalleryPaintingDTO;
 import artgallery.cms.dto.PaintingExtraDTO;
-import artgallery.cms.entity.GalleryEntity;
-import artgallery.cms.entity.GalleryPaintingEntity;
-import artgallery.cms.entity.PaintingEntity;
 import artgallery.cms.exception.GalleryDoesNotExistException;
 import artgallery.cms.exception.PaintingDoesNotExistException;
-import artgallery.cms.repository.ExhibitionRepository;
-import artgallery.cms.repository.GalleryPaintingRepository;
-import artgallery.cms.repository.GalleryRepository;
-import artgallery.cms.repository.PaintingRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

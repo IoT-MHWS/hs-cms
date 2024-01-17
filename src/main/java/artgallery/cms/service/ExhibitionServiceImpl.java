@@ -1,6 +1,13 @@
 package artgallery.cms.service;
 
+import artgallery.cms.dto.ExhibitionDTO;
 import artgallery.cms.dto.ExhibitionDeleteDTO;
+import artgallery.cms.entity.ExhibitionEntity;
+import artgallery.cms.entity.GalleryEntity;
+import artgallery.cms.exception.ExhibitionDoesNotExistException;
+import artgallery.cms.exception.GalleryDoesNotExistException;
+import artgallery.cms.repository.ExhibitionRepository;
+import artgallery.cms.repository.GalleryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,14 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import artgallery.cms.dto.ExhibitionDTO;
-import artgallery.cms.entity.ExhibitionEntity;
-import artgallery.cms.entity.GalleryEntity;
-import artgallery.cms.exception.ExhibitionDoesNotExistException;
-import artgallery.cms.exception.GalleryDoesNotExistException;
-import artgallery.cms.repository.ExhibitionRepository;
-import artgallery.cms.repository.GalleryRepository;
 
 import java.util.List;
 import java.util.Optional;

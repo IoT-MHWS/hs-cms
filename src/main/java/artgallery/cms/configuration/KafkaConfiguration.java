@@ -28,6 +28,7 @@ public class KafkaConfiguration {
     config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
     return new DefaultKafkaProducerFactory<>(config);
   }
+
   @Bean
   public KafkaTemplate<String, PaintingDeleteDTO> kafkaTemplate() {
     return new KafkaTemplate<>(producerFactory());
@@ -41,6 +42,7 @@ public class KafkaConfiguration {
     config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
     return new DefaultKafkaProducerFactory<>(config);
   }
+
   @Bean
   public KafkaTemplate<String, ExhibitionDeleteDTO> kafkaTemplateExhibition() {
     return new KafkaTemplate<>(producerFactoryExhibition());
