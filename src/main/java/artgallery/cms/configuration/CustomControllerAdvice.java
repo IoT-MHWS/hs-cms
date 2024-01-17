@@ -25,4 +25,10 @@ public class CustomControllerAdvice extends ResponseEntityExceptionHandler {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiErrorDTO(HttpStatus.NOT_FOUND, ex.getMessage()));
   }
 
+  @ResponseBody
+  @ExceptionHandler({IllegalArgumentException.class})
+  public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiErrorDTO(HttpStatus.BAD_REQUEST, ex.getMessage()));
+  }
+
 }
