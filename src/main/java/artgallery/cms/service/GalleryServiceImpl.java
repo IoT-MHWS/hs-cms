@@ -42,7 +42,7 @@ public class GalleryServiceImpl implements GalleryService {
 
 
   public GalleryDTO getGalleryById(long id) throws GalleryDoesNotExistException {
-    GalleryEntity optionalGallery = galleryRepository.findById(id)
+    var optionalGallery = galleryRepository.findById(id)
       .orElseThrow(() -> new GalleryDoesNotExistException(id));
     return mapToGalleryDto(optionalGallery);
 
