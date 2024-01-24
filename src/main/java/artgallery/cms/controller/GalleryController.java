@@ -2,7 +2,7 @@ package artgallery.cms.controller;
 
 import artgallery.cms.dto.DescriptionDTO;
 import artgallery.cms.dto.GalleryDTO;
-import artgallery.cms.exception.GalleryDoesNotExistException;
+import artgallery.cms.exception.MyGalleryDoesNotExistException;
 import artgallery.cms.exception.PaintingDoesNotExistException;
 import artgallery.cms.service.GalleryService;
 import jakarta.validation.Valid;
@@ -27,7 +27,7 @@ public class GalleryController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<?> getGalleryById(@Min(0) @PathVariable("id") long id) throws GalleryDoesNotExistException {
+  public ResponseEntity<?> getGalleryById(@Min(0) @PathVariable("id") long id) throws MyGalleryDoesNotExistException {
     return ResponseEntity.ok().body(galleryService.getGalleryById(id));
   }
 
@@ -39,7 +39,7 @@ public class GalleryController {
 
   @PutMapping("/{id}")
   @PreAuthorize("hasRole('MODERATOR')")
-  public ResponseEntity<?> updateGallery(@Min(0) @PathVariable("id") long id, @Valid @RequestBody GalleryDTO req) throws GalleryDoesNotExistException {
+  public ResponseEntity<?> updateGallery(@Min(0) @PathVariable("id") long id, @Valid @RequestBody GalleryDTO req) throws MyGalleryDoesNotExistException {
     return ResponseEntity.status(HttpStatus.OK).body(galleryService.updateGallery(id, req));
   }
 
@@ -51,14 +51,14 @@ public class GalleryController {
   }
 
   @GetMapping("/{galleryId}/paintings")
-  public ResponseEntity<?> getLinksToPaintings(@Min(0) @PathVariable long galleryId) throws GalleryDoesNotExistException {
+  public ResponseEntity<?> getLinksToPaintings(@Min(0) @PathVariable long galleryId) throws MyGalleryDoesNotExistException {
     return ResponseEntity.ok().body(galleryService.getLinksGalleryToPainting(galleryId));
   }
 
   @PutMapping("/{galleryId}/paintings/{paintingId}")
   @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<?> createOrUpdateLink(@Min(0) @PathVariable long galleryId, @Min(0) @PathVariable long paintingId,
-                                              @Valid @RequestBody DescriptionDTO linkDto) throws GalleryDoesNotExistException, PaintingDoesNotExistException {
+                                              @Valid @RequestBody DescriptionDTO linkDto) throws MyGalleryDoesNotExistException, PaintingDoesNotExistException {
     boolean exists = (galleryService.existsByGalleryIdAndPaintingId(galleryId, paintingId));
     return ResponseEntity.status(exists ? HttpStatus.OK : HttpStatus.CREATED)
       .body(galleryService.createOrUpdateLinkGalleryToPainting(galleryId, paintingId, linkDto, exists));

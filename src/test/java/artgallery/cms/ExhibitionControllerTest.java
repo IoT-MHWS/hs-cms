@@ -2,7 +2,7 @@ package artgallery.cms;
 
 import artgallery.cms.dto.ExhibitionDTO;
 import artgallery.cms.dto.GalleryDTO;
-import artgallery.cms.exception.GalleryDoesNotExistException;
+import artgallery.cms.exception.MyGalleryDoesNotExistException;
 import artgallery.cms.service.ExhibitionService;
 import artgallery.cms.service.GalleryService;
 import jakarta.transaction.Transactional;
@@ -84,7 +84,7 @@ public class ExhibitionControllerTest extends AuthorizedControllerTest {
     ExhibitionService exhibitionService;
 
     @BeforeEach
-    public void createExhibition() throws GalleryDoesNotExistException {
+    public void createExhibition() throws MyGalleryDoesNotExistException {
       exhibitionDTO = exhibitionService.createExhibition(exhibitionDTO);
     }
 

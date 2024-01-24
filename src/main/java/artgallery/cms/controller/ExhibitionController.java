@@ -2,7 +2,7 @@ package artgallery.cms.controller;
 
 import artgallery.cms.dto.ExhibitionDTO;
 import artgallery.cms.exception.ExhibitionDoesNotExistException;
-import artgallery.cms.exception.GalleryDoesNotExistException;
+import artgallery.cms.exception.MyGalleryDoesNotExistException;
 import artgallery.cms.service.ExhibitionService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -33,14 +33,14 @@ public class ExhibitionController {
 
   @PostMapping
   @PreAuthorize("hasRole('MODERATOR')")
-  public ResponseEntity<?> createExhibition(@Valid @RequestBody ExhibitionDTO req) throws GalleryDoesNotExistException {
+  public ResponseEntity<?> createExhibition(@Valid @RequestBody ExhibitionDTO req) throws MyGalleryDoesNotExistException {
     return ResponseEntity.status(HttpStatus.CREATED).body(exhibitionService.createExhibition(req));
   }
 
   @PutMapping("/{id}")
   @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<?> updateExhibition(@NotNull @Min(0) @PathVariable("id") long id, @Valid @RequestBody ExhibitionDTO req)
-    throws ExhibitionDoesNotExistException, GalleryDoesNotExistException {
+    throws ExhibitionDoesNotExistException, MyGalleryDoesNotExistException {
     exhibitionService.updateExhibition(id, req);
     return ResponseEntity.ok().body("ok");
   }

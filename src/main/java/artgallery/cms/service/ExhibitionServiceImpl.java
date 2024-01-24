@@ -5,7 +5,7 @@ import artgallery.cms.dto.ExhibitionDeleteDTO;
 import artgallery.cms.entity.ExhibitionEntity;
 import artgallery.cms.entity.GalleryEntity;
 import artgallery.cms.exception.ExhibitionDoesNotExistException;
-import artgallery.cms.exception.GalleryDoesNotExistException;
+import artgallery.cms.exception.MyGalleryDoesNotExistException;
 import artgallery.cms.repository.ExhibitionRepository;
 import artgallery.cms.repository.GalleryRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,14 +44,14 @@ public class ExhibitionServiceImpl implements ExhibitionService {
 
   }
 
-  public ExhibitionDTO createExhibition(ExhibitionDTO exhibitionDTO) throws GalleryDoesNotExistException {
+  public ExhibitionDTO createExhibition(ExhibitionDTO exhibitionDTO) throws MyGalleryDoesNotExistException {
     ExhibitionEntity exhibition = mapToExhibitionEntity(exhibitionDTO);
     ExhibitionEntity createdExhibition = exhibitionRepository.save(exhibition);
     return mapToExhibitionDto(createdExhibition);
   }
 
   @Transactional
-  public ExhibitionDTO updateExhibition(long id, ExhibitionDTO exhibitionDTO) throws ExhibitionDoesNotExistException, GalleryDoesNotExistException {
+  public ExhibitionDTO updateExhibition(long id, ExhibitionDTO exhibitionDTO) throws ExhibitionDoesNotExistException, MyGalleryDoesNotExistException {
     Optional<ExhibitionEntity> exhibition = exhibitionRepository.findById(id);
     if (exhibition.isPresent()) {
       ExhibitionEntity exhibitionEntity = exhibition.get();
@@ -59,7 +59,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
       exhibitionEntity.setStartDate(exhibitionDTO.getStartDate());
       exhibitionEntity.setEndDate(exhibitionDTO.getEndDate());
       GalleryEntity galleryEntity = galleryRepository.findById(exhibitionDTO.getGalleryId()).orElseThrow(() ->
-        new GalleryDoesNotExistException(exhibitionDTO.getGalleryId()));
+        new MyGalleryDoesNotExistException(exhibitionDTO.getGalleryId()));
 
       exhibitionEntity.setGallery(galleryEntity);
       ExhibitionEntity newExhibition = exhibitionRepository.save(exhibitionEntity);
@@ -87,13 +87,13 @@ public class ExhibitionServiceImpl implements ExhibitionService {
       .collect(Collectors.toList());
   }
 
-  private ExhibitionEntity mapToExhibitionEntity(ExhibitionDTO exhibitionDTO) throws GalleryDoesNotExistException {
+  private ExhibitionEntity mapToExhibitionEntity(ExhibitionDTO exhibitionDTO) throws MyGalleryDoesNotExistException {
     ExhibitionEntity exhibition = new ExhibitionEntity();
     exhibition.setName(exhibitionDTO.getName());
     exhibition.setStartDate(exhibitionDTO.getStartDate());
     exhibition.setEndDate(exhibitionDTO.getEndDate());
     GalleryEntity galleryEntity = galleryRepository.findById(exhibitionDTO.getGalleryId()).orElseThrow(() ->
-      new GalleryDoesNotExistException(exhibitionDTO.getGalleryId()));
+      new MyGalleryDoesNotExistException(exhibitionDTO.getGalleryId()));
     exhibition.setGallery(galleryEntity);
     return exhibition;
   }

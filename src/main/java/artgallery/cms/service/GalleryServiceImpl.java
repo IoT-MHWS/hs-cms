@@ -7,7 +7,7 @@ import artgallery.cms.dto.PaintingExtraDTO;
 import artgallery.cms.entity.GalleryEntity;
 import artgallery.cms.entity.GalleryPaintingEntity;
 import artgallery.cms.entity.PaintingEntity;
-import artgallery.cms.exception.GalleryDoesNotExistException;
+import artgallery.cms.exception.MyGalleryDoesNotExistException;
 import artgallery.cms.exception.PaintingDoesNotExistException;
 import artgallery.cms.repository.ExhibitionRepository;
 import artgallery.cms.repository.GalleryPaintingRepository;
@@ -41,9 +41,9 @@ public class GalleryServiceImpl implements GalleryService {
   }
 
 
-  public GalleryDTO getGalleryById(long id) throws GalleryDoesNotExistException {
+  public GalleryDTO getGalleryById(long id) throws MyGalleryDoesNotExistException {
     var optionalGallery = galleryRepository.findById(id)
-      .orElseThrow(() -> new GalleryDoesNotExistException(id));
+      .orElseThrow(() -> new MyGalleryDoesNotExistException(id));
     return mapToGalleryDto(optionalGallery);
 
   }
@@ -56,7 +56,7 @@ public class GalleryServiceImpl implements GalleryService {
   }
 
   @Transactional
-  public GalleryDTO updateGallery(long id, GalleryDTO galleryDto) throws GalleryDoesNotExistException {
+  public GalleryDTO updateGallery(long id, GalleryDTO galleryDto) throws MyGalleryDoesNotExistException {
     Optional<GalleryEntity> optionalGallery = galleryRepository.findById(id);
     if (optionalGallery.isPresent()) {
       GalleryEntity existingGallery = optionalGallery.get();
@@ -65,7 +65,7 @@ public class GalleryServiceImpl implements GalleryService {
       GalleryEntity updatedGallery = galleryRepository.save(existingGallery);
       return mapToGalleryDto(updatedGallery);
     }
-    throw new GalleryDoesNotExistException(id);
+    throw new MyGalleryDoesNotExistException(id);
   }
 
 
@@ -75,8 +75,8 @@ public class GalleryServiceImpl implements GalleryService {
     galleryRepository.deleteById(id);
   }
 
-  public List<PaintingExtraDTO> getLinksGalleryToPainting(long galleryId) throws GalleryDoesNotExistException {
-    galleryRepository.findById(galleryId).orElseThrow(() -> new GalleryDoesNotExistException(galleryId));
+  public List<PaintingExtraDTO> getLinksGalleryToPainting(long galleryId) throws MyGalleryDoesNotExistException {
+    galleryRepository.findById(galleryId).orElseThrow(() -> new MyGalleryDoesNotExistException(galleryId));
     List<GalleryPaintingEntity> links = galleryPaintingRepository.findByGalleryId(galleryId);
     List<PaintingEntity> paintings = links.stream()
       .map(GalleryPaintingEntity::getPainting)
@@ -105,9 +105,9 @@ public class GalleryServiceImpl implements GalleryService {
 
   @Transactional
   public GalleryPaintingDTO createOrUpdateLinkGalleryToPainting(long galleryId, long paintingId, DescriptionDTO linkDto, boolean exists)
-    throws GalleryDoesNotExistException, PaintingDoesNotExistException {
+    throws MyGalleryDoesNotExistException, PaintingDoesNotExistException {
     GalleryEntity gallery = galleryRepository.findById(galleryId)
-      .orElseThrow(() -> new GalleryDoesNotExistException(galleryId));
+      .orElseThrow(() -> new MyGalleryDoesNotExistException(galleryId));
     PaintingEntity painting = paintingRepository.findById(paintingId)
       .orElseThrow(() -> new PaintingDoesNotExistException(paintingId));
     GalleryPaintingEntity link;

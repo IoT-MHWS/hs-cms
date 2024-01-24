@@ -3,7 +3,7 @@ package artgallery.cms;
 import artgallery.cms.dto.*;
 import artgallery.cms.entity.Style;
 import artgallery.cms.exception.ArtistDoesNotExistException;
-import artgallery.cms.exception.GalleryDoesNotExistException;
+import artgallery.cms.exception.MyGalleryDoesNotExistException;
 import artgallery.cms.exception.PaintingDoesNotExistException;
 import artgallery.cms.service.ArtistService;
 import artgallery.cms.service.GalleryService;
@@ -94,7 +94,7 @@ public class GalleryPaintingTest extends AuthorizedControllerTest {
   @Nested
   class CreatedGalleryPaintingTest {
     @BeforeEach
-    public void createGalleryPainting() throws GalleryDoesNotExistException, PaintingDoesNotExistException {
+    public void createGalleryPainting() throws MyGalleryDoesNotExistException, PaintingDoesNotExistException {
       galleryService.createOrUpdateLinkGalleryToPainting(galleryDTO.getId(), paintingDTO.getId(), descriptionDTO, false);
     }
 
